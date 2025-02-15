@@ -1,3 +1,4 @@
+let pokemonLocalData = [];
 
 function onloadFunc() {
     fetchPokemonDatabase();
@@ -7,37 +8,54 @@ const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0"
 
 async function fetchPokemonDatabase() {
     let response = await fetch(BASE_URL);
-    let data = await response.json();
-    fetchPokemonDetails(data);
+    let fetchedDatabase = await response.json();
+    fetchPokemonDetails(fetchedDatabase);
 }
 
-async function fetchPokemonDetails(data) {
-    for (let pokemonIndex = 0; pokemonIndex < data.results.length; pokemonIndex++) {
-        let pokemon = data.results[pokemonIndex];
-        let detailResponse = await fetch(pokemon.url);
+async function fetchPokemonDetails(fetchedDatabase) {
+    for (let pokemonIndex = 0; pokemonIndex < fetchedDatabase.results.length; pokemonIndex++) {
+        let pokemonData = fetchedDatabase.results[pokemonIndex];
+        let detailResponse = await fetch(pokemonData.url);
         let detailData = await detailResponse.json();
-        defineDetailDataRefs(pokemon, detailData, pokemonIndex);
+        let types = [];
+        for (let typeIndex = 0; typeIndex < detailData.types.length; typeIndex++) {
+            let pokemonTypes = capitalizeFirstLetter(detailData.types[typeIndex].type.name);
+            types.push(pokemonTypes);
+        }
+        pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types);
     }
 }
 
-function defineDetailDataRefs(pokemon, detailData, pokemonIndex) {
-    let pokemonName = capitalizeFirstLetter(pokemon.name);
-    let pokemonImg = detailData.sprites.other["official-artwork"].front_default;
-    let pokemonNumber = pokemonIndex + 1;
-    let uniquePokemonId = `pokemon-types${pokemonIndex}`;
-    let cardBackgroundColor = getTypeBackgroundColor(detailData.types[0].type.name.toLowerCase());
-    pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg ,uniquePokemonId, cardBackgroundColor)
-    for (let typeIndex = 0; typeIndex < detailData.types.length; typeIndex++) {
-        let pokemonTypes = capitalizeFirstLetter(detailData.types[typeIndex].type.name);
-        pokemonTypesTemplate(uniquePokemonId, pokemonTypes);
-    }
+function pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types) {
+    let pokemonDetails = {
+        uniqueId: `pokemon-types${pokemonIndex}`,
+        number: pokemonIndex + 1,
+        name: capitalizeFirstLetter(pokemonData.name),
+        image: detailData.sprites.other["official-artwork"].front_default,
+        backgroundColor: getTypeBackgroundColor(detailData.types[0].type.name.toLowerCase()),
+        types: types
+    };
+    pokemonLocalData.push(pokemonDetails); 
+    defineDetailDataRefs(pokemonIndex);
+}
+
+function defineDetailDataRefs(pokemonIndex) {
+    let pokemonName = pokemonLocalData[pokemonIndex].name;
+    let pokemonImg = pokemonLocalData[pokemonIndex].image;
+    let pokemonNumber = pokemonLocalData[pokemonIndex].number;
+    let uniquePokemonId = pokemonLocalData[pokemonIndex].uniqueId;
+    let typeBackgroundColor = pokemonLocalData[pokemonIndex].backgroundColor;
+    let pokemonType = pokemonLocalData[pokemonIndex].types;
+    pokemonContainer.innerHTML += pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePokemonId, typeBackgroundColor)
+    renderPokemonTypes(uniquePokemonId, pokemonType)
+    
 }
 
 function pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePokemonId, cardBackgroundColor) {
-    pokemonContainer.innerHTML += /*html*/`
+    return /*html*/`
         <div  class="card" style="width: 18rem; background-color: ${cardBackgroundColor};">
             <div class="card-body card-top">
-                <h3 class="card-text">${pokemonNumber}...${pokemonName}</h3>
+                <h3 class="card-text">${pokemonNumber}... ${pokemonName}</h3>
             </div>
             <img class="pokemon-img" src="${pokemonImg}" alt="pokemon.name">
             <div class="card-body card-bottom" id="${uniquePokemonId}"></div>
@@ -45,19 +63,23 @@ function pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePoke
     `;
 }  
 
-function pokemonTypesTemplate(uniquePokemonId, pokemonTypes) {
-    let pokemonTypeColor = getTypeBackgroundColor(pokemonTypes.toLowerCase());
-    document.getElementById(uniquePokemonId).innerHTML += /*html*/`
-        <span style="background-color: ${pokemonTypeColor};" class="types">${pokemonTypes}</span>
-    `   
+function renderPokemonTypes(uniquePokemonId, pokemonTypes) {
+    document.getElementById(uniquePokemonId).innerHTML = '';
+    for (let i = 0; i < pokemonTypes.length; i++) {
+        let pokemonType = pokemonTypes[i];
+        let pokemonTypeColor = getTypeBackgroundColor(pokemonType.toLowerCase());
+        document.getElementById(uniquePokemonId).innerHTML += /*html*/`
+            <span style="background-color: ${pokemonTypeColor};" class="types">${pokemonType}</span>
+        `;
+    }
 }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getTypeBackgroundColor(pokemonType) { 
-    switch (pokemonType) {
+function getTypeBackgroundColor(pokemonTypes) { 
+    switch (pokemonTypes) {
         case 'fire':
             return '#ffb07c';
         case 'water':
@@ -96,6 +118,17 @@ function getTypeBackgroundColor(pokemonType) {
             return '#a8c8f5'; 
         default:
             return '#e0e0e0';
+    }
+}
+
+function filterPokemon() {
+    let searchInput = document.getElementById('pokemonSearch').value;
+    let filteredPokemon = pokemonLocalData.filter(pokemon => pokemon.name.toLowerCase().includes(searchInput));
+    pokemonContainer.innerHTML = '';
+    for (let filteredIndex = 0; filteredIndex < filteredPokemon.length; filteredIndex++) {
+        let pokemon = filteredPokemon[filteredIndex];
+        pokemonContainer.innerHTML += pokemonCardsTemplate(pokemon.name, pokemon.number, pokemon.image, pokemon.uniqueId, pokemon.backgroundColor);
+        renderPokemonTypes(pokemon.uniqueId, pokemon.types);
     }
 }
     
