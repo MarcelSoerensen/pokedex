@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PokeDex</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+
+  <body onload="onloadFunc()">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <div class="content">
+      <nav class="navbar bg-dark-blue bg-blur border-bottom-blue border-body sticky-top height-72px" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand">Pokedex</a>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2 input-color bg-blur" type="search" placeholder="Search" aria-label="Search">
+          </form>
+        </div>
+      </nav>
+    
+      <div id="pokemonContainer" class="pokemon-container"></div>
+      <div class="bottom-space"></div>
+
+      <footer class="bg-dark-blue bg-blur border-top-blue border-body height-72px" data-bs-theme="dark">
+        <div>
+          <a class="text-body navbar-brand">© 2025 Marcel Sörensen</a>
+        </div> 
+      </footer>
+    </div>
+
+</body>   
+</html>
