@@ -1,37 +1,49 @@
 let pokemonLocalData = [];
 let pokemonOffset = 0;
-let pokemonAmount = 20;
+let pokemonAmount = 2;
 let currentPokemonNumber = 1;
 
 function onloadFunc() {
     fetchPokemonDatabase();
 }
 
-let BASE_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
+let GENERATED_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
 
 function generatePokemonUrl(pokemonAmount, pokemonOffset) {
-    let API_URL = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonAmount}&offset=${pokemonOffset}`;
-    return API_URL;
+    let BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonAmount}&offset=${pokemonOffset}`;
+    return BASE_URL;
 }
     
 async function fetchPokemonDatabase() {
-    let response = await fetch(BASE_URL);
+    let response = await fetch(GENERATED_URL);
     let fetchedDatabase = await response.json();
     fetchPokemonDetails(fetchedDatabase);
 }
 
 async function fetchPokemonDetails(fetchedDatabase) {
-    for (let pokemonIndex = 0; pokemonIndex < fetchedDatabase.results.length; pokemonIndex++) {
-        let pokemonData = fetchedDatabase.results[pokemonIndex];
-        let detailResponse = await fetch(pokemonData.url);
-        let detailData = await detailResponse.json();
-        let types = [];
+    let arrayIndex = pokemonLocalData.length;
+        for (let pokemonIndex = 0; pokemonIndex < fetchedDatabase.results.length; pokemonIndex++) {
+            let pokemonData = fetchedDatabase.results[pokemonIndex];
+            let detailResponse = await fetch(pokemonData.url);
+            let detailData = await detailResponse.json();
+            let types = getPokemonTypes(detailData);
+            pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types);
+        }
+    renderPokemonCardsFromArray(arrayIndex);
+}
+
+function getPokemonTypes(detailData) {
+    let types = [];
         for (let typeIndex = 0; typeIndex < detailData.types.length; typeIndex++) {
             let pokemonTypes = capitalizeFirstLetter(detailData.types[typeIndex].type.name);
             types.push(pokemonTypes);
         }
-       
-        pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types);
+    return types;  
+}
+
+function renderPokemonCardsFromArray(arrayIndex) {
+    for (let startIndex = arrayIndex; startIndex< pokemonLocalData.length; startIndex++) {
+        defineDetailDataRefs(pokemonLocalData[startIndex]);  
     }
 }
 
@@ -45,8 +57,6 @@ function pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types)
         types: types
     };
     pokemonLocalData.push(pokemonDetails);
-    
-    defineDetailDataRefs(pokemonDetails);
 }
 
 function defineDetailDataRefs(pokemonDetails) {
@@ -145,7 +155,7 @@ function filterPokemon() {
 
 function loadMorePokemons() {
     pokemonOffset += pokemonAmount;
-    BASE_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
+    GENERATED_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
     onloadFunc();
 }
    
