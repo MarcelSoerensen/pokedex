@@ -1,11 +1,19 @@
 let pokemonLocalData = [];
+let pokemonOffset = 0;
+let pokemonAmount = 20;
+let currentPokemonNumber = 1;
 
 function onloadFunc() {
     fetchPokemonDatabase();
 }
 
-const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0"
+let BASE_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
 
+function generatePokemonUrl(pokemonAmount, pokemonOffset) {
+    let API_URL = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonAmount}&offset=${pokemonOffset}`;
+    return API_URL;
+}
+    
 async function fetchPokemonDatabase() {
     let response = await fetch(BASE_URL);
     let fetchedDatabase = await response.json();
@@ -22,33 +30,35 @@ async function fetchPokemonDetails(fetchedDatabase) {
             let pokemonTypes = capitalizeFirstLetter(detailData.types[typeIndex].type.name);
             types.push(pokemonTypes);
         }
+       
         pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types);
     }
 }
 
 function pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types) {
     let pokemonDetails = {
-        uniqueId: `pokemon-types${pokemonIndex}`,
-        number: pokemonIndex + 1,
+        uniqueId: `pokemon-types${pokemonIndex + pokemonOffset}`,
+        number: currentPokemonNumber++,
         name: capitalizeFirstLetter(pokemonData.name),
         image: detailData.sprites.other["official-artwork"].front_default,
         backgroundColor: getTypeBackgroundColor(detailData.types[0].type.name.toLowerCase()),
         types: types
     };
-    pokemonLocalData.push(pokemonDetails); 
-    defineDetailDataRefs(pokemonIndex);
+    pokemonLocalData.push(pokemonDetails);
+    
+    defineDetailDataRefs(pokemonDetails);
 }
 
-function defineDetailDataRefs(pokemonIndex) {
-    let pokemonName = pokemonLocalData[pokemonIndex].name;
-    let pokemonImg = pokemonLocalData[pokemonIndex].image;
-    let pokemonNumber = pokemonLocalData[pokemonIndex].number;
-    let uniquePokemonId = pokemonLocalData[pokemonIndex].uniqueId;
-    let typeBackgroundColor = pokemonLocalData[pokemonIndex].backgroundColor;
-    let pokemonType = pokemonLocalData[pokemonIndex].types;
+function defineDetailDataRefs(pokemonDetails) {
+    //let pokemonDetails = pokemonLocalData[pokemonIndex];
+    let pokemonName = pokemonDetails.name;
+    let pokemonImg = pokemonDetails.image;
+    let pokemonNumber = pokemonDetails.number;
+    let uniquePokemonId = pokemonDetails.uniqueId;
+    let typeBackgroundColor = pokemonDetails.backgroundColor;
+    let pokemonType = pokemonDetails.types;
     pokemonContainer.innerHTML += pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePokemonId, typeBackgroundColor)
-    renderPokemonTypes(uniquePokemonId, pokemonType)
-    
+    renderPokemonTypes(uniquePokemonId, pokemonType);
 }
 
 function pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePokemonId, cardBackgroundColor) {
@@ -64,11 +74,12 @@ function pokemonCardsTemplate(pokemonName, pokemonNumber, pokemonImg, uniquePoke
 }  
 
 function renderPokemonTypes(uniquePokemonId, pokemonTypes) {
-    document.getElementById(uniquePokemonId).innerHTML = '';
-    for (let i = 0; i < pokemonTypes.length; i++) {
-        let pokemonType = pokemonTypes[i];
+    let typesContainer = document.getElementById(uniquePokemonId);
+    typesContainer.innerHTML = '';
+    for (let typeIndex = 0; typeIndex < pokemonTypes.length; typeIndex++) {
+        let pokemonType = pokemonTypes[typeIndex];
         let pokemonTypeColor = getTypeBackgroundColor(pokemonType.toLowerCase());
-        document.getElementById(uniquePokemonId).innerHTML += /*html*/`
+        typesContainer.innerHTML += /*html*/`
             <span style="background-color: ${pokemonTypeColor};" class="types">${pokemonType}</span>
         `;
     }
@@ -131,6 +142,11 @@ function filterPokemon() {
         renderPokemonTypes(pokemon.uniqueId, pokemon.types);
     }
 }
-    
+
+function loadMorePokemons() {
+    pokemonOffset += pokemonAmount;
+    BASE_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
+    onloadFunc();
+}
    
 
