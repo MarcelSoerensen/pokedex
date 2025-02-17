@@ -1,0 +1,57 @@
+
+.loading-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dots-container {
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: wave 1.2s infinite ease-in-out;
+}
+
+.fire { background-color: #ffb07c; }
+.water { background-color: #7fbfff; }
+.electric { background-color: #f8e47f; }
+.grass { background-color: #a8e7a0; }
+.psychic { background-color: #f8a4e1; }
+.fighting { background-color: #ff9a6a; }
+
+@keyframes wave {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(0.8); }
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+.dot:nth-child(4) {
+    animation-delay: 0.6s;
+}
+.dot:nth-child(5) {
+    animation-delay: 0.8s;
+}
+.dot:nth-child(6) {
+    animation-delay: 1s;
+}
