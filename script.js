@@ -1,85 +1,89 @@
-let pokemonLocalData = [];
-let pokemonOffset = 0;
-let pokemonAmount = 50;
-let currentPokemonNumber = 1;
+let previewPokemonCardsData = [];
+let profilePokemonCardsData = [];
+let pokemonApiOffset = 0;
+let pokemonApiLimit = 50;
+let currentPokemonIndex = 1;
 
-function onloadFunc() {
-    showLoadingSpinner();
-    fetchPokemonDatabase(); 
+function initializePage() {
+    displayLoadingSpinner();
+    fetchPokemonData(); 
 }
 
-let GENERATED_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
+let GENERATED_URL = createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset);
 
-function generatePokemonUrl(pokemonAmount, pokemonOffset) {
-    let BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonAmount}&offset=${pokemonOffset}`;
+function createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset) {
+    let BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonApiLimit}&offset=${pokemonApiOffset}`;
     return BASE_URL;
 }
     
-async function fetchPokemonDatabase() {
+async function fetchPokemonData() {
     let response = await fetch(GENERATED_URL);
-    let fetchedDatabase = await response.json();
-    fetchPokemonDetails(fetchedDatabase);
+    let fetchedPokemonData = await response.json();
+    fetchPokemonPreviewData(fetchedPokemonData);
 }
 
-async function fetchPokemonDetails(fetchedDatabase) {
-    let arrayIndex = pokemonLocalData.length;
-        for (let pokemonIndex = 0; pokemonIndex < fetchedDatabase.results.length; pokemonIndex++) {
-            let pokemonData = fetchedDatabase.results[pokemonIndex];
-            let detailResponse = await fetch(pokemonData.url);
-            let detailData = await detailResponse.json();
-            let types = getPokemonTypes(detailData);
-            pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types);
-        }
-    renderPokemonCardsFromArray(arrayIndex);
+
+//fetch & render Pokemon Preview Cards
+async function fetchPokemonPreviewData(fetchedPokemonData) {
+    let previewDataIndex = previewPokemonCardsData.length;
+    for (let pokemonIndex = 0; pokemonIndex < fetchedPokemonData.results.length; pokemonIndex++) {
+        let pokemonInfo = fetchedPokemonData.results[pokemonIndex];
+        let previewResponse = await fetch(pokemonInfo.url);
+        let previewData = await previewResponse.json();
+        let types = getPokemonTypesForPreview(previewData);
+        addPreviewDataToArray(pokemonInfo, previewData, pokemonIndex, types);
+        console.log(previewData);
+    }
+    renderPreviewCards(previewDataIndex);
     hideLoadingSpinner();
-    document.getElementById('pokemonContainer').classList.remove('d-none');
+    document.getElementById('pokemonPreviewContainer').classList.remove('d-none');
 }
 
-function getPokemonTypes(detailData) {
-    let types = [];
-        for (let typeIndex = 0; typeIndex < detailData.types.length; typeIndex++) {
-            let pokemonTypes = capitalizeFirstLetter(detailData.types[typeIndex].type.name);
-            types.push(pokemonTypes);
-        }
-    return types; 
+function getPokemonTypesForPreview(previewData) {
+    let previewTypes = [];
+    for (let previewTypeIndex = 0; previewTypeIndex < previewData.types.length; previewTypeIndex++) {
+        let previewCardTypes = capitalizeFirstLetter(previewData.types[previewTypeIndex].type.name);
+        previewTypes.push(previewCardTypes);
+    }
+    return previewTypes; 
 }
 
-function pushPokemonDetailsToArray(pokemonData, detailData, pokemonIndex, types) {
+function addPreviewDataToArray(pokemonInfo, previewData, pokemonIndex, types) {
     let pokemonDetailsFromAPI = {
-        uniqueId: `pokemon-types${pokemonIndex + pokemonOffset}`,
-        number: currentPokemonNumber++,
-        name: capitalizeFirstLetter(pokemonData.name),
-        image: detailData.sprites.other["official-artwork"].front_default,
-        backgroundColor: getTypeBackgroundColor(detailData.types[0].type.name.toLowerCase()),
+        uniqueId: `pokemon-types${pokemonIndex + pokemonApiOffset}`,
+        number: currentPokemonIndex++,
+        name: capitalizeFirstLetter(pokemonInfo.name),
+        image: previewData.sprites.other["official-artwork"].front_default,
+        backgroundColor: getTypeBackgroundColor(previewData.types[0].type.name.toLowerCase()),
         types: types
     };
-    pokemonLocalData.push(pokemonDetailsFromAPI);
+    previewPokemonCardsData.push(pokemonDetailsFromAPI);
 }
 
-function renderPokemonCardsFromArray(arrayIndex) {
-    for (let startIndex = arrayIndex; startIndex< pokemonLocalData.length; startIndex++) {
-        defineDetailDataRefs(pokemonLocalData[startIndex]);  
+function renderPreviewCards(previewDataIndex) {
+    for (let index = previewDataIndex; index < previewPokemonCardsData.length; index++) {
+        renderPreviewCard(previewPokemonCardsData[index]);  
     }
 }
 
-function defineDetailDataRefs(pokemonDetails) {
-    let pokemonDetailsFromArray = {
-        uniqueId: pokemonDetails.uniqueId,
-        number: pokemonDetails.number,
-        name: pokemonDetails.name,
-        image: pokemonDetails.image,
-        backgroundColor: pokemonDetails.backgroundColor,
-        types: pokemonDetails.types   
+function renderPreviewCard(pokemonInfo) {
+    let previewCardDetails = {
+        uniqueId: pokemonInfo.uniqueId,
+        number: pokemonInfo.number,
+        name: pokemonInfo.name,
+        image: pokemonInfo.image,
+        backgroundColor: pokemonInfo.backgroundColor,
+        types: pokemonInfo.types   
     }
-    pokemonContainer.innerHTML += pokemonCardsTemplate(pokemonDetailsFromArray);
-    renderPokemonTypes(pokemonDetailsFromArray);
+    pokemonPreviewContainer.innerHTML += pokemonCardsTemplate(previewCardDetails);
+    renderPreviewCardTypes(previewCardDetails);
 }
 
-function renderPokemonTypes(pokemonDetailsFromArray) {
-    let typesContainer = document.getElementById(pokemonDetailsFromArray.uniqueId);
+function renderPreviewCardTypes(previewCardDetails) {
+    let typesContainer = document.getElementById(previewCardDetails.uniqueId);
    
-    for (let typeIndex = 0; typeIndex < pokemonDetailsFromArray.types.length; typeIndex++) {
-        let pokemonType = pokemonDetailsFromArray.types[typeIndex];
+    for (let previewTypeIndex = 0; previewTypeIndex < previewCardDetails.types.length; previewTypeIndex++) {
+        let pokemonType = previewCardDetails.types[previewTypeIndex];
         let pokemonTypeColor = getTypeBackgroundColor(pokemonType.toLowerCase());
         typesContainer.innerHTML += /*html*/`
             <span style="background-color: ${pokemonTypeColor};" class="types">${pokemonType}</span>
@@ -92,8 +96,8 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getTypeBackgroundColor(pokemonTypes) { 
-    switch (pokemonTypes) {
+function getTypeBackgroundColor(type) { 
+    switch (type) {
         case 'fire':
             return '#ffb07c';
         case 'water':
@@ -135,26 +139,49 @@ function getTypeBackgroundColor(pokemonTypes) {
     }
 }
 
-function filterPokemon() {
+function loadMorePreviewCards() {
+    document.getElementById('pokemonPreviewContainer').classList.add('d-none');
+    displayLoadingSpinner();
+    pokemonApiOffset += pokemonApiLimit;
+    GENERATED_URL = createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset);
+    initializePage();
+}
+
+function filterPreviewCards() {
     let searchInput = document.getElementById('pokemonSearch').value;
-    let filteredPokemon = pokemonLocalData.filter(pokemonDetailsFromArray => pokemonDetailsFromArray.name.toLowerCase().includes(searchInput));
-    pokemonContainer.innerHTML = '';
+    let filteredPokemon = previewPokemonCardsData.filter(previewCardDetails => previewCardDetails.name.toLowerCase().includes(searchInput));
+    let pokemonPreviewContainer = document.getElementById('pokemonPreviewContainer');
+    
+    pokemonPreviewContainer.innerHTML = '';
     for (let filteredIndex = 0; filteredIndex < filteredPokemon.length; filteredIndex++) {
-        let pokemonDetailsFromArray = filteredPokemon[filteredIndex];
-        pokemonContainer.innerHTML += pokemonCardsTemplate(pokemonDetailsFromArray);
-        renderPokemonTypes(pokemonDetailsFromArray);
+        let previewCardDetails = filteredPokemon[filteredIndex];
+        pokemonPreviewContainer.innerHTML += pokemonCardsTemplate(previewCardDetails);
+        renderPreviewCardTypes(previewCardDetails);
+    }
+}
+ 
+function getPreviewCardDetails(uniqueId) {
+    for (let pokemonIndex = 0; pokemonIndex < previewPokemonCardsData.length; pokemonIndex++) {
+        const previewCardDetails = previewPokemonCardsData[pokemonIndex];
+
+        if (previewCardDetails.uniqueId === uniqueId) {
+            getTypesForPreviewDetails(previewCardDetails);
+        }
     }
 }
 
-function loadMorePokemons() {
-    document.getElementById('pokemonContainer').classList.add('d-none');
-    showLoadingSpinner();
-    pokemonOffset += pokemonAmount;
-    GENERATED_URL = generatePokemonUrl(pokemonAmount, pokemonOffset);
-    onloadFunc();
+function getTypesForPreviewDetails(previewCardDetails) {
+    let types = '';
+    for (let previewTypeIndex = 0; previewTypeIndex < previewCardDetails.types.length; previewTypeIndex++) {
+        let type = previewCardDetails.types[previewTypeIndex];
+        let typeColor = getTypeBackgroundColor(type.toLowerCase());
+        types += `<span style="background-color: ${typeColor};" class="types">${type}</span>`;
+    }
+    document.getElementById('pokemonDetailsCard').innerHTML = pokemonDetailsCardTemplate(previewCardDetails, types);
+    hidePreviewContainer();
 }
- 
-function toggleButtonVisibility() {
+
+function toggleMorePokemonsButtonVisibility() {
     let pokemonSearchInput = document.getElementById('pokemonSearch');
     let morePokemonsButton = document.getElementById('morePokemonsButton');
 
@@ -165,16 +192,7 @@ function toggleButtonVisibility() {
     }
 }
 
-function showPokemonDetailCard(detailsFromArray) {
-    pokemonDetailsCard.innerHTML = pokemonDetailCardsTemplate(detailsFromArray);
-    console.log(detailsFromArray[0]);
-    console.log(detailsFromArray[4]);
-    //document.getElementById('pokemonDetailsCard').innerHTML += pokemonDetailCardsTemplate();
-    
-}
-
-function displayNone() {
-    document.getElementById('pokemonContainer').classList.add('d-none');
+function hidePreviewContainer() {
+    document.getElementById('pokemonPreviewContainer').classList.add('d-none');
     document.getElementById('morePokemonsButton').classList.add('d-none');
 }
-

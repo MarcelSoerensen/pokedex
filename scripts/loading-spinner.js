@@ -1,5 +1,4 @@
-
-function showLoadingSpinner() {
+function displayLoadingSpinner() {
     document.getElementById('loadingSpinner').classList.remove('d-none');
     document.getElementById('morePokemonsButton').classList.add('d-none');
     document.getElementById('dotsContainer').innerHTML = loadingSpinnerTemplate();

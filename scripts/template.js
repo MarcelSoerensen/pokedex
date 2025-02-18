@@ -1,31 +1,27 @@
-function pokemonCardsTemplate(pokemonDetailsFromArray) {
+function pokemonCardsTemplate(previewCardDetails) {
     return /*html*/`
-        <div onclick="showPokemonDetailCard([
-            '${pokemonDetailsFromArray.number}',
-            '${pokemonDetailsFromArray.name}',
-            '${pokemonDetailsFromArray.image}',
-            '${pokemonDetailsFromArray.backgroundColor}',
-            '${pokemonDetailsFromArray.uniqueId}',
-            ]), displayNone()"
-            class="card" style="width: 18rem; background-color: ${pokemonDetailsFromArray.backgroundColor};">
+        <div onclick="getPreviewCardDetails('${previewCardDetails.uniqueId}')" class="card card-with-hover" style="width: 18rem; background-color: ${previewCardDetails.backgroundColor};">
             <div class="card-body card-top">
-                <h3 class="card-text">${pokemonDetailsFromArray.number}...${pokemonDetailsFromArray.name}</h3>
+                <h3 class="card-text">${previewCardDetails.number}...${previewCardDetails.name}</h3>
             </div>
-            <img class="pokemon-img" src="${pokemonDetailsFromArray.image}" alt="pokemon.name">
-            <div class="card-body card-bottom" id="${pokemonDetailsFromArray.uniqueId}"></div>
+            <img class="pokemon-img" src="${previewCardDetails.image}" alt="pokemon.name">
+            <div class="card-body card-bottom" id="${previewCardDetails.uniqueId}"></div>
         </div>     
     `;
 }  
 
-function pokemonDetailCardsTemplate(detailsFromArray) {
+function pokemonDetailsCardTemplate(previewCardDetails, types) {
     return /*html*/`
-         <div class="card important-width" style="width: 18rem; background-color: ${detailsFromArray[3]};">
-            <div class="card-body card-top">
-                <h3 class="card-text">${detailsFromArray[0]}... ${detailsFromArray[1]}</h3>
-            </div>
-            <img class="pokemon-img" src="${detailsFromArray[2]}" alt="pokemon.name">
-            <div class="card-body card-bottom" id="${detailsFromArray[4]}"></div>
-        </div>     
+    <div class="card important-width" style="width: 18rem; background-color: ${previewCardDetails.backgroundColor};">
+        <div class="card-body card-top">
+            <h3 class="card-text">${previewCardDetails.number}... ${previewCardDetails.name}</h3>
+        </div>
+        <img class="pokemon-img" src="${previewCardDetails.image}" alt="${previewCardDetails.name}">
+        <div class="card-body card-bottom">
+            <div>${types}</div>
+        </div>
+        <div>${previewCardDetails.evolution}</div>
+    </div>
     `;
 }
 
