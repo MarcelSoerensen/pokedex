@@ -1,16 +1,6 @@
-function pokemonCardsTemplate(previewCardDetails) {
-    return /*html*/`
-        <div onclick="getPreviewCardDetails('${previewCardDetails.uniqueId}')" class="card card-with-hover" style="width: 18rem; background-color: ${previewCardDetails.backgroundColor};">
-            <div class="card-body card-top">
-                <h3 class="card-text">${previewCardDetails.number}...${previewCardDetails.name}</h3>
-            </div>
-            <img class="pokemon-img" src="${previewCardDetails.image}" alt="pokemon.name">
-            <div class="card-body card-bottom" id="${previewCardDetails.uniqueId}"></div>
-        </div>     
-    `;
-}  
 
-function pokemonDetailsCardTemplate(previewCardDetails, types) {
+
+function pokemonProfileContainerTemplate(previewCardDetails, types) {
     return /*html*/`
     <div class="card important-width" style="width: 18rem; background-color: ${previewCardDetails.backgroundColor};">
         <div class="card-body card-top">

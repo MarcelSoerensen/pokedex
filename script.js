@@ -1,8 +1,8 @@
-let previewPokemonCardsData = [];
-let profilePokemonCardsData = [];
+let pokemonDataLocal = [];
+
+let loadAmount = 2;
+let pokemonApiLimit = 20;
 let pokemonApiOffset = 0;
-let pokemonApiLimit = 50;
-let currentPokemonIndex = 1;
 
 function initializePage() {
     displayLoadingSpinner();
@@ -19,177 +19,118 @@ function createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset) {
 async function fetchPokemonData() {
     let response = await fetch(GENERATED_URL);
     let fetchedPokemonData = await response.json();
-    fetchPokemonPreviewData(fetchedPokemonData);
+    fetchPokemonDetailData(fetchedPokemonData);   
 }
 
-
-//fetch & render Pokemon Preview Cards
-async function fetchPokemonPreviewData(fetchedPokemonData) {
-    let previewDataIndex = previewPokemonCardsData.length;
-    for (let pokemonIndex = 0; pokemonIndex < fetchedPokemonData.results.length; pokemonIndex++) {
+async function fetchPokemonDetailData(fetchedPokemonData) {
+    let pokemonAmount = fetchedPokemonData.results.length;
+    for (let pokemonIndex = 0; pokemonIndex < pokemonAmount; pokemonIndex++) {
         let pokemonInfo = fetchedPokemonData.results[pokemonIndex];
-        let previewResponse = await fetch(pokemonInfo.url);
-        let previewData = await previewResponse.json();
-        let types = getPokemonTypesForPreview(previewData);
-        addPreviewDataToArray(pokemonInfo, previewData, pokemonIndex, types);
-        console.log(previewData);
+        let pokemonResponse = await fetch(pokemonInfo.url);
+        let pokemonData = await pokemonResponse.json();
+        pokemonDataLocal.push(pokemonData);
     }
-    renderPreviewCards(previewDataIndex);
-    hideLoadingSpinner();
+
+    waitForFullPokemonData(pokemonAmount);
+}
+
+function waitForFullPokemonData(pokemonAmount) {
+    let pokemonAmountStart = 0;
+    for (let pokemonIndex = 0; pokemonIndex < pokemonAmount; pokemonIndex++) {
+        pokemonAmountStart++;
+        renderPreviewDetails(pokemonIndex);
+        if (pokemonAmountStart === pokemonAmount) {
+            console.log(pokemonDataLocal);
+            hideLoadingSpinner();
+        }
+    }
+
+}
+
+function renderPreviewDetails(pokemonIndex) {
     document.getElementById('pokemonPreviewContainer').classList.remove('d-none');
-}
-
-function getPokemonTypesForPreview(previewData) {
-    let previewTypes = [];
-    for (let previewTypeIndex = 0; previewTypeIndex < previewData.types.length; previewTypeIndex++) {
-        let previewCardTypes = capitalizeFirstLetter(previewData.types[previewTypeIndex].type.name);
-        previewTypes.push(previewCardTypes);
-    }
-    return previewTypes; 
-}
-
-function addPreviewDataToArray(pokemonInfo, previewData, pokemonIndex, types) {
-    let pokemonDetailsFromAPI = {
-        uniqueId: `pokemon-types${pokemonIndex + pokemonApiOffset}`,
-        number: currentPokemonIndex++,
-        name: capitalizeFirstLetter(pokemonInfo.name),
-        image: previewData.sprites.other["official-artwork"].front_default,
-        backgroundColor: getTypeBackgroundColor(previewData.types[0].type.name.toLowerCase()),
-        types: types
-    };
-    previewPokemonCardsData.push(pokemonDetailsFromAPI);
-}
-
-function renderPreviewCards(previewDataIndex) {
-    for (let index = previewDataIndex; index < previewPokemonCardsData.length; index++) {
-        renderPreviewCard(previewPokemonCardsData[index]);  
-    }
-}
-
-function renderPreviewCard(pokemonInfo) {
+    let pokemonPreview = pokemonDataLocal[pokemonIndex + pokemonApiOffset];
     let previewCardDetails = {
-        uniqueId: pokemonInfo.uniqueId,
-        number: pokemonInfo.number,
-        name: pokemonInfo.name,
-        image: pokemonInfo.image,
-        backgroundColor: pokemonInfo.backgroundColor,
-        types: pokemonInfo.types   
-    }
-    pokemonPreviewContainer.innerHTML += pokemonCardsTemplate(previewCardDetails);
-    renderPreviewCardTypes(previewCardDetails);
+        number: pokemonPreview.id,
+        name: capitalizeFirstLetter(pokemonPreview.name),
+        image: pokemonPreview.sprites.other["official-artwork"].front_default,
+        backgroundColor: pokemonPreview.types[0].type.name,
+    };
+console.log(pokemonPreview);
+
+    document.getElementById('pokemonPreviewContainer').innerHTML += pokemonCardsTemplate(previewCardDetails);
+    let types = renderTypes(pokemonIndex, previewCardDetails, pokemonPreview);
+    document.getElementById(`typesContainer${previewCardDetails.number}`).innerHTML = types;
 }
 
-function renderPreviewCardTypes(previewCardDetails) {
-    let typesContainer = document.getElementById(previewCardDetails.uniqueId);
-   
-    for (let previewTypeIndex = 0; previewTypeIndex < previewCardDetails.types.length; previewTypeIndex++) {
-        let pokemonType = previewCardDetails.types[previewTypeIndex];
-        let pokemonTypeColor = getTypeBackgroundColor(pokemonType.toLowerCase());
-        typesContainer.innerHTML += /*html*/`
-            <span style="background-color: ${pokemonTypeColor};" class="types">${pokemonType}</span>
-        `;
+function renderTypes(pokemonIndex, previewCardDetails, pokemonPreview) {
+    let previewTypesData = pokemonDataLocal[pokemonIndex + pokemonApiOffset];
+    let types = '';
+    
+    document.getElementById(`typesContainer${previewCardDetails.number}`).innerHTML = '';
+
+    for (let previewTypeIndex = 0; previewTypeIndex < previewTypesData.types.length; previewTypeIndex++) {
+        let previewCardTypes = capitalizeFirstLetter(previewTypesData.types[previewTypeIndex].type.name);
+
+        types += `<span class="types ${pokemonPreview.types[previewTypeIndex].type.name}">${previewCardTypes}</span>`;
     }
     document.getElementById('morePokemonsButton').classList.remove('d-none');
+    
+    return types;
 }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getTypeBackgroundColor(type) { 
-    switch (type) {
-        case 'fire':
-            return '#ffb07c';
-        case 'water':
-            return '#7fbfff'; 
-        case 'grass':
-            return '#a8e7a0';
-        case 'electric':
-            return '#f8e47f'; 
-        case 'psychic':
-            return '#f8a4e1'; 
-        case 'bug':
-            return '#b0e34a';
-        case 'normal':
-            return '#d1d1d1';
-        case 'poison':
-            return '#d1a7f5';
-        case 'ground':
-            return '#e0b28d';
-        case 'fairy':
-            return '#f7c4e6';
-        case 'fighting':
-            return '#ff9a6a'; 
-        case 'rock':
-            return '#bfa57f'; 
-        case 'ghost':
-            return '#c7a9f0'; 
-        case 'ice':
-            return '#a8d8f3'; 
-        case 'dragon':
-            return '#a1a6f7'; 
-        case 'dark':
-            return '#8d8d8d'; 
-        case 'steel':
-            return '#b4b8b6'; 
-        case 'flying':
-            return '#a8c8f5'; 
-        default:
-            return '#e0e0e0';
-    }
-}
+function pokemonCardsTemplate(previewCardDetails) {
+    return /*html*/`
+        <div onclick="" class="card card-with-hover ${previewCardDetails.backgroundColor}" style="width: 18rem;">
+            <div class="card-body card-top">
+                <h3 class="card-text">${previewCardDetails.number}...${previewCardDetails.name}</h3>
+            </div>
+            <img class="pokemon-img" src="${previewCardDetails.image}" alt="pokemon.name">
+            <div id="typesContainer${previewCardDetails.number}" class="card-body card-bottom">
+            <div id="previewTypes"></div>
+            </div>
+        </div>     
+    `;
+} 
 
-function loadMorePreviewCards() {
+function hidePreviewContainer() {
     document.getElementById('pokemonPreviewContainer').classList.add('d-none');
-    displayLoadingSpinner();
-    pokemonApiOffset += pokemonApiLimit;
-    GENERATED_URL = createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset);
-    initializePage();
+    document.getElementById('morePokemonsButton').classList.add('d-none');
 }
 
 function filterPreviewCards() {
-    let searchInput = document.getElementById('pokemonSearch').value;
-    let filteredPokemon = previewPokemonCardsData.filter(previewCardDetails => previewCardDetails.name.toLowerCase().includes(searchInput));
+    let searchInput = document.getElementById('pokemonSearch').value.toLowerCase();
     let pokemonPreviewContainer = document.getElementById('pokemonPreviewContainer');
-    
-    pokemonPreviewContainer.innerHTML = '';
-    for (let filteredIndex = 0; filteredIndex < filteredPokemon.length; filteredIndex++) {
-        let previewCardDetails = filteredPokemon[filteredIndex];
-        pokemonPreviewContainer.innerHTML += pokemonCardsTemplate(previewCardDetails);
-        renderPreviewCardTypes(previewCardDetails);
-    }
-}
- 
-function getPreviewCardDetails(uniqueId) {
-    for (let pokemonIndex = 0; pokemonIndex < previewPokemonCardsData.length; pokemonIndex++) {
-        const previewCardDetails = previewPokemonCardsData[pokemonIndex];
 
-        if (previewCardDetails.uniqueId === uniqueId) {
-            getTypesForPreviewDetails(previewCardDetails);
+    pokemonPreviewContainer.innerHTML = '';
+    for (let filteredIndex = 0; filteredIndex < pokemonDataLocal.length; filteredIndex++) {
+        let pokemon = pokemonDataLocal[filteredIndex];
+        if (pokemon.name.toLowerCase().includes(searchInput)) {
+            renderPreviewDetails(filteredIndex);
         }
     }
-}
-
-function getTypesForPreviewDetails(previewCardDetails) {
-    let types = '';
-    for (let previewTypeIndex = 0; previewTypeIndex < previewCardDetails.types.length; previewTypeIndex++) {
-        let type = previewCardDetails.types[previewTypeIndex];
-        let typeColor = getTypeBackgroundColor(type.toLowerCase());
-        types += `<span style="background-color: ${typeColor};" class="types">${type}</span>`;
-    }
-    document.getElementById('pokemonDetailsCard').innerHTML = pokemonDetailsCardTemplate(previewCardDetails, types);
-    hidePreviewContainer();
 }
 
 function toggleMorePokemonsButtonVisibility() {
     let pokemonSearchInput = document.getElementById('pokemonSearch');
     let morePokemonsButton = document.getElementById('morePokemonsButton');
-
     if (pokemonSearchInput.value === '') {
         morePokemonsButton.classList.remove('d-none');
     } else {
         morePokemonsButton.classList.add('d-none');
     }
+}
+
+function loadMorePreviewCards() {
+    hidePreviewContainer();
+    displayLoadingSpinner();
+    pokemonApiOffset += pokemonApiLimit;
+    GENERATED_URL = createPokemonApiUrl(pokemonApiLimit, pokemonApiOffset);
+    fetchPokemonData();
 }
 
 function hidePreviewContainer() {
