@@ -27,7 +27,10 @@
     <div class="content">
       <nav class="navbar bg-dark-blue mb-4 bg-blur border-bottom-blue border-body sticky-top height-72px" data-bs-theme="dark">
         <div class="container-fluid">
-          <a class="navbar-brand"><img class="navbar-icon" src="./assets/img/pokeball-pokemon-svgrepo-com.svg" alt="">Pokedex </a>
+          <div>
+            <img class="navbar-icon" src="./assets/img/pokeball-pokemon-svgrepo-com.svg" alt="">
+            <a class="navbar-brand hide">Pokedex </a>
+          </div>
           <form class="d-flex" role="search">
             <input id="pokemonSearch" class="form-control me-2 input-color bg-blur" type="search" placeholder="Search" aria-label="Search" onkeyup="filterPreviewCards(), toggleMorePokemonsButtonVisibility()">
           </form>

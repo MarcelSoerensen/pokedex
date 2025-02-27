@@ -6,11 +6,13 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 
 .profile-card{
     max-width: 40rem;
     margin: 4%;
+    cursor:default;
 }
 
 .profile-card-border{
@@ -34,24 +36,20 @@
     color: white;
 }
 
-
-.profile-card-table td:first-child {
-    text-align: left;
-    width: 40%; 
-}
-
-.profile-card-table td:nth-child(2) {
-    text-align: right;
-    padding-right: 4px;
-    width: 20%;   
+.profile-card-table td:first-child{
+    text-align: left;  
 }
 
 .profile-card-table td:last-child{
-    text-align: left;
+    text-align: left;  
 }
 
 .profile-bg-details{
     background-color: rgba(0, 36, 47, 1) !important;
+}
+
+.freeSpace{
+    height: 16px;
 }
 
 

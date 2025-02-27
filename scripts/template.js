@@ -1,6 +1,6 @@
 function pokemonCardsTemplate(previewCardDetails, pokemonIndex) {
     return /*html*/`
-        <div onclick="renderProfileDetails(${pokemonIndex-1})" class="card preview-card-hover ${previewCardDetails.backgroundColor}" style="width: 18rem;">
+        <div onclick="getProfileDetails(${pokemonIndex-1})" class="card preview-card-hover ${previewCardDetails.backgroundColor}" style="width: 18rem;">
             <div class="card-body card-top">
                 <h3 class="card-text">${previewCardDetails.number}...${previewCardDetails.name}</h3>
             </div>
@@ -15,7 +15,7 @@ function pokemonCardsTemplate(previewCardDetails, pokemonIndex) {
 function profileCardTemplate(profileCardDetails) {
     return /*html*/`
        
-    <div class="card profile-card text-center">
+    <div onclick="overlayPrevention(event)" class="card profile-card text-center">
         <div class="profile-card-border ${profileCardDetails.backgroundColor}">
             <div class="card-body profile-card-top">
                 <h3 class="card-text">${profileCardDetails.number}...${profileCardDetails.name}</h3>
@@ -38,32 +38,27 @@ function profileCardTemplate(profileCardDetails) {
   <table class="card-text profile-card-table">
   <tr>
         <td>Gewicht:</td>
-        <td>${(profileCardDetails.weight / 10).toFixed(1)}</td>
-        <td>Kilo</td>
+        <td>${(profileCardDetails.weight / 10).toFixed(1)} Kilo</td>
     </tr>
     <tr>
         <td>Größe:</td>
-        <td>${(profileCardDetails.height / 10).toFixed(1)}</td>
-        <td>Meter</td>
+        <td>${(profileCardDetails.height / 10).toFixed(1)} Meter</td>
     </tr>
     <tr>
         <td>Erfahrung:</td>
-        <td>${profileCardDetails.experience}</td>
-        <td>Punkte</td>
+        <td>${profileCardDetails.experience} Punkte</td>
     </tr>
-</table>
-    
-    
-    
-    
+    <tr >
+        <td class="freeSpace"></td>
+    </tr>
+    <tr>
+        <td>Fähigkeiten:</td>
+        <td id="profileAbilitiesContent${profileCardDetails.number}"></td>
+    </tr>
+</table>    
     </div>
-    <div id="profileTypesContainer${profileCardDetails.number}" class="card-body card-bottom"></div>
-            
-
+    <div id="profileTypesContent${profileCardDetails.number}" class="card-body card-bottom"></div>
 </div>     
-            
-            
-    
     `;
 }
 

@@ -103,3 +103,14 @@ button:hover{
 .nav{
     background-color: rgba(0,0,0,0) !important;
 }
+
+@media (max-width: 360px){
+    .hide{
+        display: none;
+    }
+
+    .navbar-icon{
+        height: 32px !important;
+        margin-top: 5px;
+    }
+}

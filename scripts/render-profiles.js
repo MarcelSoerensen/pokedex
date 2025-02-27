@@ -1,6 +1,6 @@
 
-function renderProfileDetails(pokemonIndex) {
-    document.getElementById('pokemonProfileContent').classList.remove('d-none');
+function getProfileDetails(pokemonIndex) {
+    showPokemonProfile();
     let pokemonProfile = pokemonDataLocal[pokemonIndex];
     let profileCardDetails = {
         number: pokemonProfile.id,
@@ -12,10 +12,16 @@ function renderProfileDetails(pokemonIndex) {
         experience: pokemonProfile.base_experience,
     };
 
+    renderProfileDetails(pokemonIndex, profileCardDetails, pokemonProfile);    
+}
+
+function renderProfileDetails(pokemonIndex, profileCardDetails, pokemonProfile) {
     document.getElementById('pokemonProfileContent').innerHTML += profileCardTemplate(profileCardDetails);
     let types = renderProfileTypes(pokemonIndex, profileCardDetails, pokemonProfile);
-    document.getElementById(`profileTypesContainer${profileCardDetails.number}`).innerHTML = types;
-    hidePreviewContainer(); 
+    document.getElementById(`profileTypesContent${profileCardDetails.number}`).innerHTML = types;
+    let abilities = renderProfileAbilities(pokemonIndex, profileCardDetails, pokemonProfile);
+    document.getElementById(`profileAbilitiesContent${profileCardDetails.number}`).innerHTML = abilities;
+    showPokemonProfile(); 
 }
 
 
@@ -23,7 +29,7 @@ function renderProfileTypes(pokemonIndex, profileCardDetails, pokemonProfile) {
     let profileTypesData = pokemonDataLocal[pokemonIndex];
     let profileTypes = '';
     
-    document.getElementById(`profileTypesContainer${profileCardDetails.number}`).innerHTML = '';
+    document.getElementById(`profileTypesContent${profileCardDetails.number}`).innerHTML = '';
 
     for (let profileTypeIndex = 0; profileTypeIndex < profileTypesData.types.length; profileTypeIndex++) {
         let profileCardTypes = capitalizeFirstLetter(profileTypesData.types[profileTypeIndex].type.name);
@@ -32,6 +38,20 @@ function renderProfileTypes(pokemonIndex, profileCardDetails, pokemonProfile) {
     }
     document.getElementById('morePokemonsButton').classList.remove('d-none');
     
-    
     return profileTypes;
+}
+
+function renderProfileAbilities(pokemonIndex, profileCardDetails, pokemonProfile) {
+    let profileAbilitiesData = pokemonDataLocal[pokemonIndex];
+    let profileAbilities = '';
+    
+    document.getElementById(`profileAbilitiesContent${profileCardDetails.number}`).innerHTML = '';
+
+    for (let profileAbilitiesIndex = 0; profileAbilitiesIndex < profileAbilitiesData.types.length; profileAbilitiesIndex++) {
+        let profileCardAbilities = capitalizeFirstLetter(profileAbilitiesData.abilities[profileAbilitiesIndex].ability.name);
+        profileAbilities += `<span ${pokemonProfile.abilities[profileAbilitiesIndex].ability.name}">${profileCardAbilities} </span>`;
+    }
+    document.getElementById('morePokemonsButton').classList.remove('d-none');
+    
+    return profileAbilities;
 }

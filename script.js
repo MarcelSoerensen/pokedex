@@ -6,15 +6,16 @@ function initializePage() {
 }
 
 async function fetchPokemonData() {
+    hidePreviewContainer();
     let pokemonAmount = pokemonDataLocal.length +1;
     for (let pokemonIndex = pokemonAmount; pokemonIndex < pokemonAmount +20; pokemonIndex++) {
             let pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIndex}`);
             let pokemonData = await pokemonResponse.json();
             pokemonDataLocal.push(pokemonData);
-        showPokemonPreview();
         getPreviewDetails(pokemonIndex, pokemonData);
     }
     hideLoadingSpinner();
+    showPokemonPreview();
 }
 
 function capitalizeFirstLetter(string) {
@@ -59,13 +60,21 @@ function hidePreviewContainer() {
     document.getElementById('morePokemonsButton').classList.add('d-none');
 }
 
-function hideProfileContainer() {
-    document.getElementById('pokemonProfileContent').classList.add('d-none');
-}
-
 function showPokemonPreview() {
     document.getElementById('pokemonPreviewContent').classList.remove('d-none');
     document.getElementById('pokemonProfileContent').innerHTML = '';
     document.getElementById('pokemonProfileContent').classList.add('d-none');
     document.getElementById('morePokemonsButton').classList.remove('d-none');
+    document.getElementById('pokemonSearch').classList.remove('d-none');
+}
+
+function showPokemonProfile() {
+    document.getElementById('pokemonProfileContent').classList.remove('d-none');
+    document.getElementById('pokemonPreviewContent').classList.add('d-none');
+    document.getElementById('morePokemonsButton').classList.add('d-none');
+    document.getElementById('pokemonSearch').classList.add('d-none');
+}
+
+function overlayPrevention(event) {
+    event.stopPropagation();
 }
