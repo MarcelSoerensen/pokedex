@@ -1,17 +1,69 @@
-
-
-function pokemonProfileContainerTemplate(previewCardDetails, types) {
+function pokemonCardsTemplate(previewCardDetails, pokemonIndex) {
     return /*html*/`
-    <div class="card important-width" style="width: 18rem; background-color: ${previewCardDetails.backgroundColor};">
-        <div class="card-body card-top">
-            <h3 class="card-text">${previewCardDetails.number}... ${previewCardDetails.name}</h3>
-        </div>
-        <img class="pokemon-img" src="${previewCardDetails.image}" alt="${previewCardDetails.name}">
-        <div class="card-body card-bottom">
-            <div>${types}</div>
-        </div>
-        <div>${previewCardDetails.evolution}</div>
+        <div onclick="renderProfileDetails(${pokemonIndex-1})" class="card preview-card-hover ${previewCardDetails.backgroundColor}" style="width: 18rem;">
+            <div class="card-body card-top">
+                <h3 class="card-text">${previewCardDetails.number}...${previewCardDetails.name}</h3>
+            </div>
+            <img class="preview-card-img" src="${previewCardDetails.image}" alt="pokemon.name">
+            <div id="previewTypesContainer${previewCardDetails.number}" class="card-body card-bottom"></div>
+            <div id="previewTypes"></div>
+            
+        </div>     
+    `;
+} 
+
+function profileCardTemplate(profileCardDetails) {
+    return /*html*/`
+       
+    <div class="card profile-card text-center">
+        <div class="profile-card-border ${profileCardDetails.backgroundColor}">
+            <div class="card-body profile-card-top">
+                <h3 class="card-text">${profileCardDetails.number}...${profileCardDetails.name}</h3>
+            </div>
+            <img class="profile-card-img" src="${profileCardDetails.image}" alt="pokemon.name">
+            
+            <ul class="nav nav-tabs card-header-tabs card-header">
+      <li class="nav-item">
+        <a class="nav-link profile-bg-details active" aria-disabled="true" href="#">main</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">stats</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" aria-disabled="true">evo chain</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body profile-bg-details">
+  <table class="card-text profile-card-table">
+  <tr>
+        <td>Gewicht:</td>
+        <td>${(profileCardDetails.weight / 10).toFixed(1)}</td>
+        <td>Kilo</td>
+    </tr>
+    <tr>
+        <td>Größe:</td>
+        <td>${(profileCardDetails.height / 10).toFixed(1)}</td>
+        <td>Meter</td>
+    </tr>
+    <tr>
+        <td>Erfahrung:</td>
+        <td>${profileCardDetails.experience}</td>
+        <td>Punkte</td>
+    </tr>
+</table>
+    
+    
+    
+    
     </div>
+    <div id="profileTypesContainer${profileCardDetails.number}" class="card-body card-bottom"></div>
+            
+
+</div>     
+            
+            
+    
     `;
 }
 
