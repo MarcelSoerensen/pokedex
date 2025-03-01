@@ -22,11 +22,6 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function hidePreviewContainer() {
-    document.getElementById('pokemonPreviewContent').classList.add('d-none');
-    document.getElementById('morePokemonsButton').classList.add('d-none');
-}
-
 function filterPreviewCards() {
     let searchInput = document.getElementById('pokemonSearch').value.toLowerCase();
     let pokemonPreviewContent = document.getElementById('pokemonPreviewContent');
@@ -53,26 +48,6 @@ function loadMorePreviewCards() {
     hidePreviewContainer();
     displayLoadingSpinner();
     fetchPokemonData();   
-}
-
-function hidePreviewContainer() {
-    document.getElementById('pokemonPreviewContent').classList.add('d-none');
-    document.getElementById('morePokemonsButton').classList.add('d-none');
-}
-
-function showPokemonPreview() {
-    document.getElementById('pokemonPreviewContent').classList.remove('d-none');
-    document.getElementById('pokemonProfileContent').innerHTML = '';
-    document.getElementById('pokemonProfileContent').classList.add('d-none');
-    document.getElementById('morePokemonsButton').classList.remove('d-none');
-    document.getElementById('pokemonSearch').classList.remove('d-none');
-}
-
-function showPokemonProfile() {
-    document.getElementById('pokemonProfileContent').classList.remove('d-none');
-    document.getElementById('pokemonPreviewContent').classList.add('d-none');
-    document.getElementById('morePokemonsButton').classList.add('d-none');
-    document.getElementById('pokemonSearch').classList.add('d-none');
 }
 
 function overlayPrevention(event) {

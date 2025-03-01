@@ -1,6 +1,7 @@
 
 function getProfileDetails(pokemonIndex) {
     showPokemonProfile();
+    document.getElementById('morePokemonsButton').classList.add('d-none');
     let pokemonProfile = pokemonDataLocal[pokemonIndex];
     let profileCardDetails = {
         number: pokemonProfile.id,
@@ -10,8 +11,8 @@ function getProfileDetails(pokemonIndex) {
         height: pokemonProfile.height,
         weight: pokemonProfile.weight,
         experience: pokemonProfile.base_experience,
+        stats: pokemonProfile.stats
     };
-
     renderProfileDetails(pokemonIndex, profileCardDetails, pokemonProfile);    
 }
 
@@ -49,8 +50,9 @@ function renderProfileAbilities(pokemonIndex, profileCardDetails, pokemonProfile
 
     for (let profileAbilitiesIndex = 0; profileAbilitiesIndex < profileAbilitiesData.types.length; profileAbilitiesIndex++) {
         let profileCardAbilities = capitalizeFirstLetter(profileAbilitiesData.abilities[profileAbilitiesIndex].ability.name);
-        profileAbilities += `<span ${pokemonProfile.abilities[profileAbilitiesIndex].ability.name}">${profileCardAbilities} </span>`;
+            profileAbilities += `<span ${pokemonProfile.abilities[profileAbilitiesIndex].ability.name}">${profileCardAbilities} </span>`;
     }
+
     document.getElementById('morePokemonsButton').classList.remove('d-none');
     
     return profileAbilities;

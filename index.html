@@ -18,6 +18,7 @@
     <script src="./scripts/loading-spinner.js"></script>
     <script src="./scripts/render-previews.js"></script>
     <script src="./scripts/render-profiles.js"></script>
+    <script src="./scripts/show-hide.js"></script>
     <script src="./scripts/template.js"></script>
 
   </head>
@@ -33,13 +34,14 @@
           </div>
           <form class="d-flex" role="search">
             <input id="pokemonSearch" class="form-control me-2 input-color bg-blur" type="search" placeholder="Search" aria-label="Search" onkeyup="filterPreviewCards(), toggleMorePokemonsButtonVisibility()">
+            <button id="backToPreviewButton" type="button" class="d-none form-control me-2 input-color bg-blur" onclick="showPokemonPreview();">zurück</button>
           </form>
         </div>
       </nav>
 
       <div class="preview-container">
       <div id="pokemonPreviewContent" class="preview-content"></div>
-        <button id="morePokemonsButton" type="button" class="d-none btn bg-dark-blue btn-primary" onclick="loadMorePreviewCards()">mehr Pokémons</button>
+        <button id="morePokemonsButton" type="button" class="d-none more-pokemon-button-margin btn bg-dark-blue btn-primary" onclick="loadMorePreviewCards()">mehr Pokémons</button>
       </div>
       
 

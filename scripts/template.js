@@ -23,42 +23,122 @@ function profileCardTemplate(profileCardDetails) {
             <img class="profile-card-img" src="${profileCardDetails.image}" alt="pokemon.name">
             
             <ul class="nav nav-tabs card-header-tabs card-header">
-      <li class="nav-item">
-        <a class="nav-link profile-bg-details active" aria-disabled="true" href="#">main</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">stats</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" aria-disabled="true">evo chain</a>
-      </li>
-    </ul>
-  </div>
-  <div class="card-body profile-bg-details">
-  <table class="card-text profile-card-table">
-  <tr>
-        <td>Gewicht:</td>
-        <td>${(profileCardDetails.weight / 10).toFixed(1)} Kilo</td>
-    </tr>
-    <tr>
-        <td>Größe:</td>
-        <td>${(profileCardDetails.height / 10).toFixed(1)} Meter</td>
-    </tr>
-    <tr>
-        <td>Erfahrung:</td>
-        <td>${profileCardDetails.experience} Punkte</td>
-    </tr>
-    <tr >
-        <td class="freeSpace"></td>
-    </tr>
-    <tr>
-        <td>Fähigkeiten:</td>
-        <td id="profileAbilitiesContent${profileCardDetails.number}"></td>
-    </tr>
-</table>    
+                <li class="nav-item">
+                    <a id="main-link" class="nav-link profile-bg-details" onclick="showProfileMainCard()" href="#">main</a>
+                </li>
+                <li class="nav-item">
+                    <a id="stats-link" class="nav-link" onclick="showProfileStatsCard()" href="#">stats</a>
+                </li>
+            </ul>
+        </div>
+        <div class="profile-details-card">
+            <div id="profileMainCard" class="details-height">${profileCardMainTemplate(profileCardDetails)}</div>
+            <div id="profileStatsCard" class="d-none details-height">${profileCardStatsTemplate(profileCardDetails)}</div>
+        </div>
+        <div id="profileTypesContent${profileCardDetails.number}" class="card-body card-bottom"></div>
+        
+    </div>     
+    `;
+}
+
+function profileCardMainTemplate(profileCardDetails){
+    return /*html*/`
+        
+        <div class="card-body profile-bg-details">
+            <table class="card-text profile-card-table">
+                <tr>
+                    <td>Gewicht</td>
+                    <td>:</td>
+                    <td>${(profileCardDetails.weight / 10).toFixed(1)}</td>
+                    <td>Kilo</td>
+                </tr>
+                <tr>
+                    <td>Größe</td>
+                    <td>:</td>
+                    <td>${(profileCardDetails.height / 10).toFixed(1)}</td>
+                    <td>Meter</td>
+                </tr>
+                <tr>
+                    <td>Erfahrung</td>
+                    <td>:</td>
+                    <td>${profileCardDetails.experience}</td>
+                    <td>Punkte</td>
+                </tr>
+                <tr>
+                    <td class="space-line"></td>
+                </tr>
+                <tr>
+                    <td>Fähigkeiten</td>
+                    <td>:</td>
+                    <td id="profileAbilitiesContent${profileCardDetails.number}" colspan="2" class="text-left"></td>
+                    <td></td>
+                </tr>
+            </table>    
+        </div>
+        `;
+}
+
+function profileCardStatsTemplate(profileCardDetails) {
+    return /*html*/`
+        
+    <div class="card-body profile-bg-details">
+        <div class="card-text profile-card-table">
+            <div class="profile-bg-details stats-line">
+                <div>hp:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[0].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[0].base_stat}</div>
+                </div>
+            </div>
+            <div class="profile-bg-details stats-line">
+                <div>attack:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[1].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[1].base_stat}</div>
+                </div>
+            </div>
+            <div class="profile-bg-details stats-line">
+                <div>defense:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[2].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[2].base_stat}</div>
+                </div>
+            </div>
+            <div class="profile-bg-details stats-line">
+                <div>special-attack:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[3].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[3].base_stat}</div>
+                </div>
+            </div>
+            <div class="profile-bg-details stats-line">
+                <div>special-defense:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[4].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[4].base_stat}</div>
+                </div>
+            </div>
+            <div class="profile-bg-details stats-line">
+                <div>speed:</div>
+                <div class="stats-progress">
+                    <div class="progress-bar-outline">
+                        <div class="progress-bar" style="width: ${profileCardDetails.stats[5].base_stat / 255 * 100}%;"></div>
+                    </div>
+                    <div class="width-20">${profileCardDetails.stats[5].base_stat}</div>
+                </div>
+            </div> 
+        </div>  
     </div>
-    <div id="profileTypesContent${profileCardDetails.number}" class="card-body card-bottom"></div>
-</div>     
     `;
 }
 

@@ -78,14 +78,17 @@ footer{
 button{
     height: 40px;
     width: 18rem;
-    margin: 2rem 0 6rem 0!important;
     box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.5);
     border-color: rgba(30, 66, 77, 1) !important;
     cursor: pointer;
 }
 
+.more-pokemon-button-margin{
+    margin: 2rem 0 6rem 0!important;
+}
+
 button:hover{
-    box-shadow: 0px 0px 2px 1px rgba(60, 96, 107, 1);
+    box-shadow: 0px 0px 1px 1px rgba(40, 76, 87, 1)
 }
 
 .d-none{
@@ -96,8 +99,11 @@ button:hover{
 .nav-link{
     color: white !important;
     border: 1px solid rgba(30, 66, 77, 0.5) !important;
-    
     margin: 0 2px 0 2px;
+}
+
+.nav-link:hover{
+   color: rgba(50, 86, 97, 1) !important;
 }
 
 .nav{
