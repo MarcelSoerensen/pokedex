@@ -1,6 +1,3 @@
-/**
- * This Function is used to display the loading Spinner
- */
 
 function displayLoadingSpinner() {
     document.getElementById('loadingSpinner').classList.remove('d-none');
