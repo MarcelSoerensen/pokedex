@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 7319988 (%*)
 function displayLoadingSpinner() {
     document.getElementById('loadingSpinner').classList.remove('d-none');
     document.getElementById('morePokemonsButton').classList.add('d-none');
@@ -11,3 +8,4 @@ function displayLoadingSpinner() {
 function hideLoadingSpinner() {
     document.getElementById('loadingSpinner').classList.add('d-none');
 }
+
