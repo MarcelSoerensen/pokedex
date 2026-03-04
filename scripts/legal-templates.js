@@ -4,14 +4,13 @@ function imprintTemplate() {
             <h1>Impressum</h1> 
             <h2>Angaben gemäß § 5 DDG</h2> 
             <p>Marcel Sörensen<br> 
-            Schloßallee<br> 
-            45<br> 
+            Schloßallee 45<br> 
             13156 Berlin <br> 
             </p> 
             <h3>Vertreten durch:</h3>
             <p>Marcel Sörensen</p> 
             <h3>Kontakt:</h3>
-            <p>Telefon: +49176-31055989<br>
+            <a href="tel:+4917631055989">Tel: +49 176 310 55 989</a><br>
             E-Mail: <a href="mailto:contact@marcel-soerensen.com">contact@marcel-soerensen.com</a></p> 
             <h3>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h3>
             <p>Wir nehmen nicht an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil und sind dazu auch nicht verpflichtet.</p> 
@@ -34,7 +33,13 @@ function privacyTemplate() {
             <h1>Datenschutzhinweise</h1>
             <h2>Verantwortlicher</h2>
             <p>Verantwortlicher im Sinne der Datenschutzgesetze, insbesondere der EU-Datenschutz-Grundverordnung (DSGVO), ist:</p>
-            <p class='generator_user_input'>Marcel Sörensen</p>
+            Marcel Sörensen<br>
+            Schloßallee 45<br>
+            13156 Berlin<br>
+            Tel: <a href="tel:+4917631055989">+49 176 310 55 989</a><br>
+            Mail: <a href="mailto:contact@marcel-soerensen.com">contact@marcel-soerensen.com</a>
+            <br>
+            <br>
             <h2>Ihre Betroffenenrechte</h2>
             <p>Unter den angegebenen Kontaktdaten können Sie gemäß EU-Datenschutz-Grundverordnung (DSGVO) jederzeit folgende Rechte ausüben:</p>
             <ul>
@@ -83,7 +88,7 @@ function privacyTemplate() {
             <h4>Empfänger</h4>
             <p>Empfänger der Daten sind ggf. technische Dienstleister, die für den Betrieb und die Wartung unserer Webseite als Auftragsverarbeiter tätig werden.</p>
             <h4>Speicherdauer</h4>
-            <p>Daten werden spätestens Die im Rahmen der Kontaktaufnahme übermittelten Daten werden nach abschließender Bearbeitung Ihrer Anfrage gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten bestehen. nach Bearbeitung der Kontaktaufnahme gelöscht.</p>
+            <p>Daten werden spätestens nach abschließender Bearbeitung Ihrer Anfrage/Kontaktaufnahme gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
             <p>Sofern es zu einem Vertragsverhältnis kommt, unterliegen wir den gesetzlichen Aufbewahrungsfristen. Diese betragen grundsätzlich 6 oder 10 Jahre aus Gründen der ordnungsmäßigen Buchführung und steuerrechtlichen Anforderungen.</p>
             <h4>Bereitstellung vorgeschrieben oder erforderlich</h4>
             <p>Die Bereitstellung Ihrer personenbezogenen Daten erfolgt freiwillig. Wir können Ihre Anfrage jedoch nur bearbeiten, sofern Sie uns die erforderlichen Daten und den Grund der Anfrage mitteilen.</p>
@@ -94,7 +99,11 @@ function privacyTemplate() {
             <p>Sie haben das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die Verarbeitung Sie betreffender personenbezogener Daten, die aufgrund Art. 6 Abs. 1 lit. f DSGVO (Datenverarbeitung auf der Grundlage einer Interessenabwägung) erfolgt, Widerspruch einzulegen; dies gilt auch für ein auf diese Bestimmung gestütztes Profiling im Sinne von Art. 4 Nr. 4 DSGVO.</p>
             <p>Legen Sie Widerspruch ein, werden wir Ihre personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten überwiegen, oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen.</p>
             <h3>Empfänger eines Widerspruchs</h3>
-            <p class='generator_user_input'>Marcel Sörensen, Schloßallee 45, 13156 Berlin, Telefon: +49176-31055989, E-Mail: contact@marcel-soerensen.com<br />
+            <p>Marcel Sörensen, Schloßallee 45, 13156 Berlin 
+            <br>
+            Tel:<a href="tel:+4917631055989"> +49 176 310 55 989</a>,
+            <br>
+            Mail:<a href="mailto:contact@marcel-soerensen.com"> contact@marcel-soerensen.com</a><br />
             <br />
             </p>
             <h2>Änderung unserer Datenschutzerklärung</h2>
