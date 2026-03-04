@@ -5,6 +5,10 @@ function showPokemonPreview() {
     document.getElementById('morePokemonsButton').classList.remove('d-none');
     document.getElementById('pokemonSearch').classList.remove('d-none');
     document.getElementById('backToPreviewButton').classList.add('d-none');
+    document.getElementById('pokemonPreviewContent').innerHTML = '';
+    for (let i = 0; i < pokemonDataLocal.length; i++) {
+        getPreviewDetails(i + 1, pokemonDataLocal[i]);
+    }
 }
 
 function showPokemonProfile() {

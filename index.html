@@ -1,18 +1,29 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PokeDex</title>
-    <link rel="shortcut icon" href="./assets/img/pokeball-pokemon-svgrepo-com.svg" type="image/x-icon">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./styles/nav-bar.css">
-    <link rel="stylesheet" href="./styles/profile-content.css">
-    <link rel="stylesheet" href="./styles/preview-content.css">
-    <link rel="stylesheet" href="./styles/loading-spinner.css">
-    <link rel="stylesheet" href="./styles/background-colors.css">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      rel="shortcut icon"
+      href="./assets/img/pokeball-pokemon-svgrepo-com.svg"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/nav-bar.css" />
+    <link rel="stylesheet" href="./styles/profile-content.css" />
+    <link rel="stylesheet" href="./styles/preview-content.css" />
+    <link rel="stylesheet" href="./styles/loading-spinner.css" />
+    <link rel="stylesheet" href="./styles/background-colors.css" />
+    <link rel="stylesheet" href="./styles/start-screen.css" />
+    <link rel="stylesheet" href="./styles/legal.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
 
     <script src="./script.js"></script>
     <script src="./scripts/loading-spinner.js"></script>
@@ -20,43 +31,132 @@
     <script src="./scripts/render-profiles.js"></script>
     <script src="./scripts/show-hide.js"></script>
     <script src="./scripts/template.js"></script>
-
+    <script src="./scripts/legal-templates.js"></script>
   </head>
 
-  <body onload="initializePage()">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <body>
+    <div id="startScreen">
+      <img
+        id="startScreenPokeball"
+        src="./assets/img/pokeball-pokemon-svgrepo-com.svg"
+        alt="Pokeball"
+      />
+      <button
+        id="startScreenButton"
+        type="button"
+        class="form-control me-2 input-color bg-blur"
+        onclick="startAppFromStartScreen()"
+      >
+        Click to start
+      </button>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <div class="content">
-      <nav class="navbar bg-dark-blue mb-4 bg-blur border-bottom-blue border-body sticky-top height-72px" data-bs-theme="dark">
+      <nav
+        class="navbar bg-dark-blue mb-4 bg-blur border-bottom-blue border-body sticky-top height-72px"
+        data-bs-theme="dark"
+      >
         <div class="container-fluid">
           <div>
-            <img class="navbar-icon" src="./assets/img/pokeball-pokemon-svgrepo-com.svg" alt="">
+            <img
+              class="navbar-icon"
+              src="./assets/img/pokeball-pokemon-svgrepo-com.svg"
+              alt=""
+            />
             <a class="navbar-brand hide">Pokedex </a>
           </div>
           <form class="d-flex" role="search">
-            <input id="pokemonSearch" class="form-control me-2 input-color bg-blur" type="search" placeholder="Search" aria-label="Search" onkeyup="filterPreviewCards(), toggleMorePokemonsButtonVisibility()">
-            <button id="backToPreviewButton" type="button" class="d-none form-control me-2 input-color bg-blur" onclick="showPokemonPreview();">zurück</button>
+            <input
+              id="pokemonSearch"
+              class="form-control me-2 input-color bg-blur"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onkeyup="
+                (filterPreviewCards(), toggleMorePokemonsButtonVisibility())
+              "
+            />
+            <button
+              id="backToPreviewButton"
+              type="button"
+              class="d-none form-control me-2 input-color bg-blur"
+              onclick="showPokemonPreview()"
+            >
+              zurück
+            </button>
           </form>
         </div>
       </nav>
-      
-      <div class="preview-container">
-      <div id="pokemonPreviewContent" class="preview-content"></div>
-        <button id="morePokemonsButton" type="button" class="d-none more-pokemon-button-margin btn bg-dark-blue btn-primary" onclick="loadMorePreviewCards()">mehr Pokémons</button>
-      </div>
-      
 
-      <div id="pokemonProfileContent" onclick="showPokemonPreview()" class="profile-content"></div>
+      <div class="preview-container">
+        <div id="pokemonPreviewContent" class="preview-content"></div>
+        <button
+          id="morePokemonsButton"
+          type="button"
+          class="d-none more-pokemon-button-margin btn bg-dark-blue btn-primary"
+          onclick="loadMorePreviewCards()"
+        >
+          mehr Pokémons
+        </button>
+      </div>
+
+      <div
+        id="pokemonProfileContent"
+        onclick="showPokemonPreview()"
+        class="profile-content"
+      ></div>
 
       <div id="loadingSpinner" class="loading-spinner-container d-none">
         <div id="dotsContainer" class="dots-container"></div>
       </div>
 
-      <footer class="bg-dark-blue bg-blur border-top-blue border-body height-72px" data-bs-theme="dark">
-        <div>
-          <a class="text-body navbar-brand">© 2025 Marcel Sörensen</a>
-        </div> 
+      <footer
+        class="bg-dark-blue bg-blur border-top-blue border-body height-72px"
+        data-bs-theme="dark"
+      >
+        <div
+          class="d-flex justify-content-between align-items-center h-100"
+        >
+          <div>
+            <a class="text-body navbar-brand">© 2025 Marcel Sörensen</a>
+            <div class="small text-secondary" style="font-size: 0.85em">
+              Pokémon-Daten bereitgestellt von
+              <a
+                href="https://pokeapi.co/"
+                target="_blank"
+                rel="noopener"
+                class="text-secondary text-decoration-none"
+                >PokéAPI</a
+              >
+            </div>
+          </div>
+          <div>
+            <a
+              href="#"
+              onclick="
+                showImprint();
+                return false;
+              "
+              class="text-body mx-2 text-decoration-none"
+              >Legal Notice</a
+            >
+            
+            <a
+              href="#"
+              onclick="
+                showPrivacy();
+                return false;
+              "
+              class="text-body mx-2 text-decoration-none"
+              >Privacy Policy</a
+            >
+          </div>
+        </div>
       </footer>
     </div>
-
-</body>   
+  </body>
 </html>

@@ -1,0 +1,114 @@
+#startScreen {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 34, 46, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.5s;
+}
+#startScreenPokeball {
+  width: 180px;
+  height: 180px;
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.4));
+  transform: scale(2.1) translateY(0);
+  opacity: 1;
+}
+#startScreenButton {
+  width: 180px;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  color: rgba(69, 74, 83, 1) !important;
+  background: rgb(231, 232, 236) !important;
+  border: 1px solid    rgba(69, 74, 83, 0.5)!important;
+  border-radius: 0.7rem;
+  box-shadow: 0 0.5px 0 0 #fff inset,
+              0 2.5px 8px 0 rgba(69, 74, 83, 0.01),
+              0 0.5px 0 0 #f3f4f6 inset;
+  transition: all 0.2s ease-in-out;
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  margin-left: 9px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+#startScreenButton:hover {
+  background: #f0f0f0 !important;
+  box-shadow: 0 1px 2px 0 rgba(69, 74, 83, 0.07),
+              0 1.5px 0 0 #fff inset,
+              0 0.5px 0 0 #f3f4f6 inset,
+              0 2px 8px 0 rgba(69, 74, 83, 0.04) inset;
+  transform: scale(0.98) translateY(1px);
+}
+#startScreenButton:active {
+  background: rgb(231, 232, 236) !important;
+  box-shadow: 0 1.5px 6px 0 rgba(69, 74, 83, 0.10) inset,
+              0 1.5px 0 0 #fff inset,
+              0 0.5px 0 0 #f3f4f6 inset;
+}
+
+@keyframes pokeballIn {
+  0% {
+    transform: scale(0.5) translateY(80px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pokeballOut {
+  0% {
+    transform: scale(2.1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5) translateY(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes startButtonIn {
+  0% {
+    transform: scale(0.5) translateY(80px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes startButtonOut {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5) translateY(-80px);
+    opacity: 0;
+  }
+}
+#startScreenButton.anim-out {
+  animation: startButtonOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@media (max-width: 600px) {
+  #startScreenPokeball {
+    width: 100px;
+    height: 100px;
+  }
+  #startScreenButton {
+    width: 135px;
+    font-size: 0.95rem;
+    margin-top: -1px;
+  }
+}
