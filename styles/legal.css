@@ -25,14 +25,12 @@
   .imprint-privacy-content h1 {
     font-size: 2em;
     font-weight: 700;
-    color: #fff;
     margin-top: 1.2em;
     margin-bottom: 0.7em;
   }
   .imprint-privacy-content h2 {
     font-size: 1.4em;
     font-weight: 600;
-    color: #e9ecef;
     margin-top: 1.1em;
     margin-bottom: 0.6em;
     border-bottom: 1.5px solid #3a4650;
@@ -41,7 +39,6 @@
   .imprint-privacy-content h3 {
     font-size: 1.15em;
     font-weight: 600;
-    color: #e9ecef;
     margin-top: 1em;
     margin-bottom: 0.4em;
     border-bottom: 1px solid #3a4650;
@@ -50,7 +47,6 @@
   .imprint-privacy-content h4 {
     font-size: 1.05em;
     font-weight: 500;
-    color: #bfc9d1;
     margin-top: 0.8em;
     margin-bottom: 0.3em;
     border-bottom: 1px solid #3a4650;
