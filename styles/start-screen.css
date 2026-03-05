@@ -18,6 +18,7 @@
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.4));
   transform: scale(2.1) translateY(0);
   opacity: 1;
+  animation: pokeballIn 0.7s cubic-bezier(.68,-0.55,.27,1.55) forwards;
 }
 #startScreenButton {
   width: 180px;
@@ -33,6 +34,7 @@
   transition: all 0.2s ease-in-out;
   transform: scale(1) translateY(0);
   opacity: 1;
+  animation: startButtonIn 0.7s cubic-bezier(.68,-0.55,.27,1.55) forwards;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   margin-left: 9px;
@@ -96,9 +98,6 @@
     transform: scale(0.5) translateY(-80px);
     opacity: 0;
   }
-}
-#startScreenButton.anim-out {
-  animation: startButtonOut 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }
 
 @media (max-width: 600px) {

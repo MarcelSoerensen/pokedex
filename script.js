@@ -103,7 +103,6 @@ function startAppFromStartScreen() {
 function animateStartScreenOut() {
   const pokeball = document.getElementById("startScreenPokeball");
   const startBtn = document.getElementById("startScreenButton");
-  const profileContent = document.getElementById("pokemonProfileContent");
 
   if (pokeball)
     pokeball.style.animation =
@@ -111,15 +110,12 @@ function animateStartScreenOut() {
   if (startBtn)
     startBtn.style.animation =
       "startButtonOut 0.7s cubic-bezier(.68,-0.55,.27,1.55) forwards";
-  if (profileContent) profileContent.style.display = "none";
 }
 
 function hideStartScreenAndInitialize() {
   const startScreen = document.getElementById("startScreen");
-  const profileContent = document.getElementById("pokemonProfileContent");
 
   if (!startScreen) {
-    if (profileContent) profileContent.style.display = "";
     initializePage();
     return;
   }
@@ -127,7 +123,6 @@ function hideStartScreenAndInitialize() {
   startScreen.style.opacity = "0";
   setTimeout(() => {
     startScreen.style.display = "none";
-    if (profileContent) profileContent.style.display = "";
     initializePage();
   }, 1200);
 }
