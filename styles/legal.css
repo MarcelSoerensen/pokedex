@@ -1,3 +1,9 @@
+.imprint-privacy-content h2,
+.imprint-privacy-content h3,
+.imprint-privacy-content h4 {
+  color: #50bfff99;
+}
+
 .imprint-privacy-content a {
   color: #50bfff;
   text-decoration: none;
@@ -15,6 +21,7 @@
     font-size: 0.97rem;
     word-break: break-word;
   }
+  
   .imprint-privacy-content h1 {
     font-size: 2em;
     font-weight: 700;

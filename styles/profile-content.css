@@ -1,13 +1,13 @@
 .profile-content{
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    flex: 1;
     cursor: pointer;
     background-color: rgba(0, 24, 34, 1);
+    width: 100%;
+    padding: 0;
 }
 
 .profile-card{
